@@ -1,5 +1,3 @@
-
-
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -10,6 +8,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #load environmental variables
 load_dotenv()
 
+import dj_database_url
+
+#password DB
+DB_PASSWORD_YO=os.environ['DB_PASSWORD_YO']
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -19,9 +22,10 @@ load_dotenv()
 SECRET_KEY = 'django-insecure-twj#02+^w2+q1i6!df@6z%oxe4)r_cx+!ccogok4=&e_=2109!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower()=="true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+CSRF_TRUSTED_ORIGINS=[]
 
 
 # Application definition
@@ -37,6 +41,7 @@ INSTALLED_APPS = [
     'cart',
     'whitenoise.runserver_nostatic',
     'payment',
+    'paypal.standard.ipn',
     
 ]
 
@@ -78,18 +83,20 @@ WSGI_APPLICATION = 'Ecom.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE':'django.db.backends.postgresql',
-        'NAME': 'defaultdb',
-        'USER': 'avnadmin',
-        'PASSWORD': os.environ.get('DB_PASSWORD_YO'),
-        'HOST': 'pg-webapp-1-shinra-ban-webapp-1.j.aivencloud.com',
-        'PORT': '18963',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+ #       'ENGINE':'django.db.backends.postgresql',
+ #       'NAME': 'defaultdb',
+ #       'USER': 'avnadmin',
+ #       'PASSWORD': os.environ.get('DB_PASSWORD_YO'),
+ #       'HOST': 'pg-webapp-1-shinra-ban-webapp-1.j.aivencloud.com',
+  #      'PORT': '18963',
         
-    }
+   }
 }
 
+
+#DATABASES["default"]= dj_database_url.parse("postgresql://shinra_ban_ecommerce_user:Z62i5IhvZXkHOAjf4ncmfJSTOG0AEJ7y@dpg-d0i6mcemcj7s739onf1g-a.oregon-postgres.render.com/shinra_ban_ecommerce")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -139,3 +146,8 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#paypal settings
+PAYPAL_TEST=True #sandbox set to true
+
+PAYPAL_RECEIVER_EMAIL='shinraban@app.com'

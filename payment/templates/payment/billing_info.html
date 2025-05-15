@@ -30,10 +30,8 @@
 
         {{ product.price }}
 
-
-
         {% endif %}
-
+        <br/>
         <small>Quantity:
         {% for key,value in quantities.items %}
             {% if key == product.id|slugify %}
@@ -44,27 +42,49 @@
         {% endfor %}</small>
         <br/><br/>
 
-   
-
-
-
     {% endfor %}
 
     <strong>Totals: ZAR {{ totals}}</strong>
     <br/><br/>
 
     <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Update Items</a>
+  </div>
+</div>
+ <br/><br/>
+
+ <div class="card">
+  <div class="card-header">
+   Shipping Info
+  </div>
+  <br/><br/>
+
+<div class="card-body">
+
+    Name: {{shipping_info.shipping_full_name}}<br/>
+    Email: {{shipping_info.shipping_email}}<br/>
+    Address 1: {{shipping_info.shipping_address1}}<br/>
+    Address 2: {{shipping_info.shipping_address2}}<br/>
+    City: {{shipping_info.shipping_city}}<br/>
+    State: {{shipping_info.shipping_State}}<br/>
+    Zipcode: {{shipping_info.shipping_zipcode}}<br/>
+    Country: {{shipping_info.shipping_country}}<br/>
+    <br/>
+    <a href="{% url 'checkout' %}" class="btn btn-outline-secondary">Update Shipping</a>
 
   </div>
 </div>
+<br/><br/>
 
- <br/><br/>
+<center>
+    {{ paypal_form.render }}
+</center>
+  <br/><br/>
 
 <div class="card">
   <div class="card-header">
    Billing Info
   </div>
-  <br/><br/>
+
 
 <div class="card-body">
 
@@ -73,7 +93,7 @@
     {% csrf_token %}
     {{ billing_form.as_p}}
     <br/>
-    <a href="{% url 'checkout' %}" class="btn btn-outline-secondary">Update Shipping</a>
+    <a href="{% url 'checkout' %}" class="btn btn-outline-secondary">Update Billing</a>
 
   </div>
 </div>
@@ -82,6 +102,8 @@
 Pay Now
 </button>
 </form>
+<br/><br/>
+
 
         </div>
     </div>
